@@ -1,18 +1,55 @@
+:root {
+    --bg-color: #0f172a;
+    --card-bg: rgba(30, 41, 59, 0.7);
+    --text-main: #f8fafc;
+    --text-sub: #94a3b8;
+    --border-color: rgba(255, 255, 255, 0.1);
+    --accent-color: #3b82f6;
+    --glow-color: rgba(59, 130, 246, 0.3);
+}
+
+body.light-mode {
+    --bg-color: #f1f5f9;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --text-main: #0f172a;
+    --text-sub: #64748b;
+    --border-color: rgba(0, 0, 0, 0.08);
+    --accent-color: #2563eb;
+    --glow-color: rgba(37, 99, 235, 0.15);
+}
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     font-family: 'Inter', sans-serif;
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
 
 body {
-    background-color: #0f172a;
-    color: #f8fafc;
+    background-color: var(--bg-color);
+    color: var(--text-main);
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
     overflow: hidden;
+    position: relative;
+}
+
+/* Background Glow Effect */
+.glow-bg {
+    position: absolute;
+    width: 300px;
+    height: 300px;
+    background: radial-gradient(circle, var(--glow-color) 0%, rgba(0,0,0,0) 70%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    animation: pulse 4s infinite alternate;
 }
 
 .container {
@@ -21,20 +58,39 @@ body {
     align-items: center;
     width: 100%;
     padding: 20px;
+    z-index: 1;
 }
 
 .profile-card {
-    background: rgba(30, 41, 59, 0.7);
+    position: relative;
+    background: var(--card-bg);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     padding: 40px 30px;
     border-radius: 20px;
     text-align: center;
     max-width: 400px;
     width: 100%;
-    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
-    animation: fadeIn 1s ease-in-out;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+    animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Toggle Dark/Light Button */
+.theme-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    font-size: 18px;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 50%;
+}
+.theme-btn:hover {
+    color: var(--accent-color);
 }
 
 .avatar-container {
@@ -49,8 +105,13 @@ body {
     height: 100%;
     border-radius: 50%;
     object-fit: cover;
-    border: 3px solid #3b82f6;
-    box-shadow: 0 4px 14px rgba(59, 130, 246, 0.4);
+    border: 3px solid var(--accent-color);
+    box-shadow: 0 4px 14px var(--glow-color);
+    transition: transform 0.3s ease;
+}
+
+.avatar-container img:hover {
+    transform: scale(1.05) rotate(3deg);
 }
 
 .status-badge {
@@ -60,7 +121,7 @@ body {
     width: 20px;
     height: 20px;
     background-color: #22c55e;
-    border: 3px solid #1e293b;
+    border: 3px solid var(--bg-color);
     border-radius: 50%;
 }
 
@@ -68,19 +129,27 @@ h1 {
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 5px;
-    color: #ffffff;
+    color: var(--text-main);
 }
 
 .title {
     font-size: 14px;
-    color: #94a3b8;
+    color: var(--text-sub);
     font-weight: 500;
     margin-bottom: 15px;
+    height: 20px;
+}
+
+/* Typing Cursor Animation */
+.cursor {
+    animation: blink 0.7s infinite;
+    color: var(--accent-color);
+    font-weight: bold;
 }
 
 .bio {
     font-size: 14px;
-    color: #cbd5e1;
+    color: var(--text-sub);
     line-height: 1.6;
     margin-bottom: 25px;
 }
@@ -100,22 +169,22 @@ h1 {
     height: 40px;
     background-color: rgba(255, 255, 255, 0.05);
     border-radius: 50%;
-    color: #f8fafc;
+    color: var(--text-main);
     font-size: 18px;
     transition: all 0.3s ease;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--border-color);
     text-decoration: none;
 }
 
 .social-links a:hover {
-    background-color: #3b82f6;
+    background-color: var(--accent-color);
     color: #ffffff;
-    transform: translateY(-3px);
-    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.4);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 15px var(--glow-color);
 }
 
 .action-buttons button {
-    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    background: linear-gradient(135deg, var(--accent-color) 0%, #1d4ed8 100%);
     color: white;
     border: none;
     padding: 12px 24px;
@@ -125,22 +194,25 @@ h1 {
     cursor: pointer;
     transition: all 0.3s ease;
     width: 100%;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    box-shadow: 0 4px 12px var(--glow-color);
 }
 
 .action-buttons button:hover {
-    opacity: 0.9;
     transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(59, 130, 246, 0.5);
+    box-shadow: 0 6px 16px var(--glow-color);
 }
 
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(20px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}
+
+@keyframes pulse {
+    0% { transform: translate(-50%, -50%) scale(1); opacity: 0.5; }
+    100% { transform: translate(-50%, -50%) scale(1.3); opacity: 0.9; }
 }
